@@ -1,15 +1,16 @@
 Hello ! My name is Srieehari Muthu and this is my first Data Analysis Project using R. Through this simple case study I learned numerous R functions such as creating graphs, mutating data frames, and how the data analysis process works in general. I hope to use this expereicne in the future and apply this knowledge to more complex data frames. 
 
-Introduction:
+**Introduction:**
+
 Purpose of the Case Study: Bella beat, a small upcoming wellness technology company, seeks to expand its market presence by leveraging insights from smart device usage data. As a Junior Data analyst on the marketing analytics team, I will analyze this data to discover trends on how consumers use smart devise and provide recommendations for Bellabeat’s marketing strategy.  This analysis will focus on how these trends can be applied to one of Bellabeat’s products, helping future marketing efforts.
 Scenario: This case study is intended to simulate a real-world situation where a growing company needs to leverage data insights and improve its marketing strategy. The dataset used to make these insights will be from the public Fitbit dataset found on Kaggle. 
 
-Identified Problems:
+**Identified Problems:**
 Understanding Consumer Behavior: Bellabeat needs to understand how users interact with their smart devices to determine opportunities to enhance their products.
 Data Limitations: The available Fitbit dataset may not fully represent Bellabeat’s target audience due to factors such as drive to be healthy.
 
 
-Data Analysis Approach:
+**Data Analysis Approach:**
 
 1.Loading and Previewing Data:
 Datasets Loaded:
@@ -20,7 +21,6 @@ weightLogInfo: Includes user weight data, such as initial and final weights over
 2. Calculating Weight Difference:
 Objective: Determine if there were significant changes in users' weights over time.
 
-Method:
 
 Sorted the weightLogInfo data by Id and Date.
 Calculated the first and last recorded weights (InitialWeight and FinalWeight) for each user.
@@ -30,7 +30,6 @@ Outcome: Provides insights into how much weight change occurred for each user, w
 3. Calculating Average Distance and Calories Burned:
 Objective: Understand the average physical activity levels and calorie expenditure for each user.
 
-Method:
 
 Grouped the daily_activity dataset by user Id.
 Calculated the average total distance (AverageDistance) and average calories burned (AverageCalories) for each user.
@@ -39,7 +38,6 @@ Outcome: Helps to identify patterns in physical activity and caloric burn across
 4. Analyzing Maximum Heart Rate:
 Objective: Identify the maximum heart rate achieved by each user, which may correlate with fitness levels or exertion intensity.
 
-Method:
 
 Grouped the heartrate_data by user Id.
 Calculated the maximum heart rate (max) for each user.
@@ -48,7 +46,6 @@ Outcome: This information can provide insights into user fitness levels and help
 5. Combining Data for Comprehensive Analysis:
 Objective: Create a unified dataset to analyze the relationship between various metrics such as weight change, distance, calories burned, and heart rate.
 
-Method:
 
 Merged (left_join) the different datasets (weight_diff, average_distance_by_id, max_heartrate) on Id to create a combined_data table.
 Outcome: This integrated dataset allows for more holistic analysis and correlations between multiple factors that affect user health and behavior.
@@ -66,20 +63,20 @@ Method: Bar plot showing initial and final weights side by side for each user.
 
 
 
-Graphs 
+**Graphs **
 ![StepsVCalories](https://github.com/user-attachments/assets/5a8123c7-d8ff-494e-96d6-1ff61adc9a34)
 ![Initial Vs Final Weight](https://github.com/user-attachments/assets/da80561b-93c8-4e13-b1ff-9d86630f8fcd)
 
-Key points –
+**Key points **
 The analysis reveals a slight correlation between the distance covered and the number of calories burned, indicating that increased physical activity does have some impact on calorie expenditure. However, the data shows almost no change in weight for most individuals, suggesting that distance alone may not be a sufficient indicator of weight loss. 
 
 Other factors, such as individual health conditions, dietary habits, and metabolism, likely play significant roles in achieving weight loss goals. It is recommended that the company further investigate these factors to provide a more comprehensive approach to weight management, tailoring their programs to address these variables for better client outcomes.
 
 
 
-What Was Learned: The case study highlighted the importance of data-driven decision-making in shaping marketing strategies. By analyzing consumer behavior, Bellabeat can refine its product positioning, identify new market opportunities, and drive customer engagement.
-
-Future Plans
+**What Was Learned: The case study highlighted the importance of data-driven decision-making in shaping marketing strategies. By analyzing consumer behavior, Bellabeat can refine its product positioning, identify new market opportunities, and drive customer engagement.
+**
+**Future Plans**
 
  •Investigate Additional Factors: Conduct further research to identify and analyze other variables that may influence weight loss including:
 •	dietary intake
