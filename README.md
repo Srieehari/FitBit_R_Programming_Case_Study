@@ -51,6 +51,7 @@ Merged (left_join) the different datasets (weight_diff, average_distance_by_id, 
 Outcome: This integrated dataset allows for more holistic analysis and correlations between multiple factors that affect user health and behavior.
 
 6. Visualizing Key Relationships:
+
 Graphs Created:
 Relationship Between Steps and Calories Burned:
 Objective: Visualize the correlation between the number of steps taken and calories burned.
