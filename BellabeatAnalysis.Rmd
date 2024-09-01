@@ -1,0 +1,155 @@
+
+```markdown
+---
+title: "Bellabeat Case Study: Analyzing Smart Device Data"
+author: "Srieehari Muthu"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Introduction
+
+**Purpose of the Case Study:**  
+Bellabeat, a small upcoming wellness technology company, seeks to expand its market presence by leveraging insights from smart device usage data. As a Junior Data Analyst on the marketing analytics team, I will analyze this data to discover trends on how consumers use smart devices and provide recommendations for Bellabeat’s marketing strategy. This analysis will focus on how these trends can be applied to one of Bellabeat’s products, helping future marketing efforts.
+
+**Scenario:**  
+This case study is intended to simulate a real-world situation where a growing company needs to leverage data insights and improve its marketing strategy. The dataset used to make these insights will be from the public Fitbit dataset found on Kaggle.
+
+# Identified Problems
+
+1. **Understanding Consumer Behavior:**  
+   Bellabeat needs to understand how users interact with their smart devices to determine opportunities to enhance their products.
+
+2. **Data Limitations:**  
+   The available Fitbit dataset may not fully represent Bellabeat’s target audience due to factors such as a drive to be healthy.
+
+# Data Analysis Approach
+
+```{r libraries, echo=FALSE, message=FALSE}
+# Load necessary libraries
+library(tidyverse)
+library(lubridate)
+library(janitor)
+library(ggplot2)
+library(skimr)
+library(dplyr)
+
+# Load the datasets
+daily_activity <- read_csv("/cloud/project/data/dailyActivity_merged.csv")
+heartrate_data <- read_csv("/cloud/project/data/heartrate_seconds_merged.csv")
+weightLogInfo <- read_csv("/cloud/project/data/weightLogInfo_merged.csv")
+```
+
+## Weight Difference Analysis
+
+```{r weight-difference-analysis, echo=FALSE}
+weight_diff <- weightLogInfo %>%
+  arrange(Id, Date) %>%  
+  group_by(Id) %>%
+  summarize(
+    InitialWeight = first(WeightKg),
+    FinalWeight = last(WeightKg),
+    WeightChange = FinalWeight - InitialWeight
+  ) %>%
+  ungroup()
+
+# Preview the weight difference
+weight_diff
+```
+
+## Average Distance and Calories Burned
+
+```{r avg-distance-calories, echo=FALSE}
+average_distance_by_id <- daily_activity %>%
+  group_by(Id) %>%
+  summarize(
+    AverageDistance = mean(TotalDistance, na.rm = TRUE),
+    AverageCalories = mean(Calories, na.rm = TRUE)
+  )
+
+# Preview the average distance and calories burned
+average_distance_by_id
+```
+
+## Heart Rate Analysis
+
+```{r max-heartrate, echo=FALSE}
+max_heartrate <- heartrate_data %>%
+  group_by(Id) %>%
+  summarize(
+    max = max(Value)
+  )
+
+# Preview the max heart rate
+max_heartrate
+```
+
+## Combined Data Analysis
+
+```{r combined-data-analysis, echo=FALSE}
+combined_data <- weight_diff %>%
+  left_join(average_distance_by_id, by = "Id") %>%
+  left_join(max_heartrate, by = "Id") %>%
+  mutate(Digit = dense_rank(Id))  # Create 'Digit' column here
+
+# Preview the combined data
+combined_data
+```
+
+# Graphs
+
+## Relationship Between Steps and Calories Burned
+
+```{r steps-vs-calories, echo=FALSE}
+# Summarize total steps and calories burned by user
+sum_of_activity <- daily_activity %>%
+  group_by(Id) %>%
+  summarize(
+    totalSteps = sum(TotalSteps, na.rm = TRUE),
+    totalCalories = sum(Calories, na.rm = TRUE)
+  )
+
+# Plot the relationship between steps and calories burned
+ggplot(sum_of_activity, aes(x = totalSteps, y = totalCalories)) +
+  geom_point(color = "purple", alpha = 0.5) +
+  geom_smooth(method = "lm", color = "red") +
+  labs(title = "Relationship Between Steps and Calories Burned", 
+       x = "Total Steps", y = "Calories Burned")
+```
+
+## Initial and Final Weights for Each ID
+
+```{r weight-comparison, echo=FALSE}
+# Reshape data for plotting
+long_data <- pivot_longer(combined_data, 
+                          cols = c(InitialWeight, FinalWeight), 
+                          names_to = "WeightType", values_to = "Weight")
+
+# Plot the initial and final weights
+ggplot(long_data, aes(x = factor(Digit), y = Weight, fill = WeightType)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Initial and Final Weights for Each ID",
+       x = "ID_Digit", y = "Weight (kg)") +
+  theme_minimal()
+```
+
+# Key Insights
+
+- The analysis reveals a slight correlation between the distance covered and the number of calories burned, indicating that increased physical activity does have some impact on calorie expenditure.
+- However, the data shows almost no change in weight for most individuals, suggesting that distance alone may not be a sufficient indicator of weight loss.
+- Other factors, such as individual health conditions, dietary habits, and metabolism, likely play significant roles in achieving weight loss goals. It is recommended that the company further investigate these factors to provide a more comprehensive approach to weight management, tailoring their programs to address these variables for better client outcomes.
+
+# Future Plans
+
+1. **Investigate Additional Factors:**  
+   Conduct further research to identify and analyze other variables that may influence weight loss, including dietary intake, metabolism, and underlying health conditions. This can be done by collecting additional data on nutrition and health metrics.
+
+2. **Enhance Data Collection:**  
+   Expand the scope of data collection to include more datasets that are provided in the Kaggle Dataset. This can help in building a more accurate and comprehensive model for predicting weight loss.
+
+3. **Monitor and Evaluate:**  
+   In the event that new interventions are applied, incorporate these programs and the data collected from them. Collect feedback and evaluate the impact on users’ weight and overall health to ensure that the adjustments are making a positive difference.
+
+4. **Update Marketing Strategies:**  
+   Adjust marketing strategies to highlight the comprehensive approach of the company’s wellness programs. Emphasize the importance of a holistic approach to health, integrating both physical activity and other critical factors.
+```
